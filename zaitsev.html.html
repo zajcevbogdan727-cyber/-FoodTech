@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Биоинженерия в FoodTech — Еда будущего</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            background: linear-gradient(135deg, #e8f0e3 0%, #d4e8d0 30%, #c8e0c4 60%, #e0ece0 100%);
+            background-attachment: fixed;
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Декоративный верхний узор */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -120px;
+            left: -120px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(27,94,32,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: -100px;
+            right: -100px;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(46,125,50,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Логотип */
+        .logo {
+            background: linear-gradient(135deg, #0a2f1f 0%, #155427 50%, #1b5e20 100%);
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 24px;
+            font-size: 1.9rem;
+            letter-spacing: 1px;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo span {
+            font-weight: 400;
+            font-size: 1rem;
+            display: block;
+            opacity: 0.85;
+            margin-top: 4px;
+            letter-spacing: 2px;
+        }
+
+        /* Вкладки */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 6px;
+            padding: 12px 15px;
+        }
+
+        .tab-btn {
+            background: rgba(27,94,32,0.08);
+            border: 1px solid rgba(27,94,32,0.15);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1b5e20;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: rgba(27,94,32,0.18);
+            border-color: #1b5e20;
+        }
+
+        .tab-btn.active {
+            background: #1b5e20;
+            color: white;
+            border-color: #1b5e20;
+            box-shadow: 0 6px 18px rgba(27,94,32,0.35);
+        }
+
+        /* Контейнер */
+        .tab-content {
+            width: 100%;
+            max-width: 1050px;
+            margin: 24px auto 40px;
+            padding: 0 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tab-pane {
+            display: none;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(6px);
+            border-radius: 20px;
+            padding: 35px 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.6);
+            animation: fadeIn 0.35s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #0a2f1f;
+            margin-bottom: 22px;
+            border-left: 6px solid #1b5e20;
+            padding-left: 18px;
+        }
+
+        h3 {
+            color: #2e7d32;
+            margin: 24px 0 12px;
+            font-size: 1.35em;
+        }
+
+        p, li {
+            font-size: 1.07em;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        /* Карточки */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .card {
+            background: rgba(241,248,233,0.85);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            border: 1px solid rgba(27,94,32,0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .card h4 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        /* Плюсы / Минусы */
+        .plusminus {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .plus, .minus {
+            flex: 1 1 280px;
+            padding: 22px;
+            border-radius: 14px;
+        }
+
+        .plus {
+            background: rgba(232,245,233,0.8);
+            border: 1px solid rgba(165,214,167,0.6);
+        }
+
+        .minus {
+            background: rgba(251,233,231,0.8);
+            border: 1px solid rgba(239,154,154,0.5);
+        }
+
+        /* Hero на главной */
+        .hero-mini {
+            background: linear-gradient(135deg, #0a2f1f 0%, #155427 50%, #1e6b2c 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            border-radius: 20px;
+            margin-bottom: 28px;
+        }
+
+        .hero-mini h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .hero-mini p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        /* Выделение цифр */
+        .highlight {
+            background: rgba(27,94,32,0.12);
+            padding: 10px 18px;
+            border-radius: 10px;
+            margin: 12px 0;
+            font-weight: 600;
+            color: #0a2f1f;
+            border-left: 4px solid #1b5e20;
+        }
+
+        /* Сноска */
+        .footnote {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 18px;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            color: #555;
+            margin: 30px 0 20px;
+            font-size: 0.95em;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Адаптив */
+        @media (max-width: 700px) {
+            .tab-btn {
+                padding: 7px 13px;
+                font-size: 0.85rem;
+            }
+            .hero-mini h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="logo">🧬 Биоинженерия в FoodTech <span>еда будущего: наука, технологии, устойчивое развитие</span></div>
+
+<div class="tabs">
+    <button class="tab-btn active" data-tab="home">Главная</button>
+    <button class="tab-btn" data-tab="definition">1. Определение</button>
+    <button class="tab-btn" data-tab="founders">2. Основоположники</button>
+    <button class="tab-btn" data-tab="achievements">3. Достижения</button>
+    <button class="tab-btn" data-tab="proscons">4. Плюсы и минусы</button>
+    <button class="tab-btn" data-tab="application">5. Применение</button>
+    <button class="tab-btn" data-tab="relevance">6. Актуальность</button>
+</div>
+
+<div class="tab-content">
+
+    <!-- ===== ГЛАВНАЯ ===== -->
+    <div class="tab-pane active" id="home">
+        <div class="hero-mini">
+            <h1>🌍 Еда будущего уже здесь</h1>
+            <p>Как биоинженерия меняет нашу тарелку — и всю планету</p>
+        </div>
+        <p>Добро пожаловать! Этот сайт рассказывает о <strong>биоинженерии в FoodTech</strong> — одной из самых быстрорастущих и обсуждаемых областей современной науки.</p>
+
+        <div class="highlight">📊 Глобальный рынок пищевых биотехнологий оценивался в <strong>32,55 млрд долларов в 2025 году</strong> и, по прогнозам, достигнет <strong>85,2 млрд к 2035 году</strong> (CAGR ~10%).</div>
+
+        <p>Вы узнаете:</p>
+        <ul>
+            <li>🔬 <strong>как</strong> работают ключевые технологии — от CRISPR до точной ферментации;</li>
+            <li>👨‍🔬 <strong>кто</strong> стоял у истоков и кто двигает отрасль сегодня;</li>
+            <li>📈 <strong>какие</strong> достижения уже стали реальностью и какие цифры стоят за рынком;</li>
+            <li>⚖️ <strong>плюсы и минусы</strong> биоинженерии в еде — честный анализ;</li>
+            <li>🏭 <strong>где</strong> всё это уже применяется — от полей до персонализированного рациона;</li>
+            <li>🛡️ <strong>как</strong> тема связана с ИБ и почему фудтех-кибербез — это специальность будущего.</li>
+        </ul>
+        <p><em>Используйте вкладки выше, чтобы перемещаться по разделам.</em></p>
+    </div>
+
+    <!-- ===== 1. ОПРЕДЕЛЕНИЕ ===== -->
+    <div class="tab-pane" id="definition">
+        <h2>1. Что такое биоинженерия в FoodTech?</h2>
+        <p><strong>Биоинженерия в FoodTech</strong> — междисциплинарная область на стыке молекулярной биологии, генетики, микробиологии, биоинформатики и пищевых технологий. Она использует живые системы — микроорганизмы, клеточные культуры, ферменты — для создания, улучшения и производства продуктов питания.</p>
+
+        <div class="highlight">💡 Если кратко: это когда еду создают не «на ферме», а программируют «в лаборатории» — с помощью ДНК, биореакторов и точных данных.</div>
+
+        <h3>Ключевые направления</h3>
+        <div class="cards">
+            <div class="card"><h4>🧫 Генная модификация (ГМО)</h4><p>Целенаправленное изменение ДНК растений и животных для повышения урожайности, устойчивости к засухе и вредителям, обогащения витаминами. Рынок ГМ-продуктов: рост с <strong>$388 млрд (2025) до $452 млрд (2030)</strong>.</p></div>
+            <div class="card"><h4>✂️ CRISPR / генное редактирование</h4><p>Точечное «выключение» или замена отдельных генов без вставки чужеродной ДНК. В 2025 г. FDA одобрило CRISPR-кукурузу VPM-0006, а в Чили — первую в Америке генно-отредактированную пшеницу.</p></div>
+            <div class="card"><h4>🔬 Клеточные технологии</h4><p>Выращивание настоящего мяса, рыбы и морепродуктов из стволовых клеток в биореакторах. В США уже <strong>5 компаний</strong> получили одобрение FDA/USDA, включая Believer Meats, Upside Foods, Wildtype и Mission Barns.</p></div>
+            <div class="card"><h4>🧪 Точная ферментация</h4><p>Микроорганизмы (дрожжи, бактерии) синтезируют белки, жиры и ферменты, идентичные животным. Рынок взлетит с <strong>$5,02 млрд (2025) до $36,31 млрд (2030)</strong> — CAGR 48,6%.</p></div>
+            <div class="card"><h4>🖨️ 3D-печать еды</h4><p>Послойное формирование продуктов с заданной текстурой и составом. Рынок вырастет с <strong>$531 млн (2025) до $7,8 млрд (2034)</strong>.</p></div>
+            <div class="card"><h4>🤖 ИИ и персонализация</h4><p>Искусственный интеллект подбирает рацион под генетику, микробиом и образ жизни. Рынок AI в персонализированном питании: рост с <strong>$4,5 млрд (2025) до $5,55 млрд (2026)</strong>.</p></div>
+        </div>
+        <p class="footnote">Источники: MarketsandMarkets, BCC Research, Fortune Business Insights, Straits Research, FAO, GlobalData, DigitalFoodLab.</p>
+    </div>
+
+    <!-- ===== 2. ОСНОВОПОЛОЖНИКИ ===== -->
+    <div class="tab-pane" id="founders">
+        <h2>2. Кто создавал направление</h2>
+        <p>У биоинженерии фудтеха нет одного «отца». Это результат вековой работы генетиков, селекционеров, биохимиков и инженеров. Вот ключевые фигуры.</p>
+        <div class="cards">
+            <div class="card"><h4>Грегор Мендель (1822–1884)</h4><p>Австрийский монах, открывший законы наследственности. Его опыты с горохом заложили фундамент всей современной генетики и селекции.</p></div>
+            <div class="card"><h4>Норман Борлоуг (1914–2009)</h4><p>Американский агроном, «отец зелёной революции». Вывел высокоурожайные сорта пшеницы, спас от голода, по разным оценкам, <strong>до миллиарда человек</strong> в Мексике, Индии и Пакистане. Лауреат Нобелевской премии мира (1970).</p></div>
+            <div class="card"><h4>Марк Пост (род. 1957)</h4><p>Профессор Маастрихтского университета. В 2013 году представил первый в мире культивированный бургер. Стоимость демонстрационного образца составила €250 000, но он доказал: мясо из пробирки — реальность.</p></div>
+            <div class="card"><h4>Дженнифер Дудна и Эммануэль Шарпантье</h4><p>Разработали технологию <strong>CRISPR-Cas9</strong> (2012), позволяющую редактировать геном с беспрецедентной точностью. Получили Нобелевскую премию по химии (2020). Без CRISPR невозможно представить современный фудтех.</p></div>
+            <div class="card"><h4>Пат Браун (род. 1954)</h4><p>Основатель <strong>Impossible Foods</strong>. Будучи профессором Стэнфорда, нашёл способ воспроизвести вкус мяса с помощью растительного гема. Сегодня Impossible Burger продаётся в тысячах ресторанов по всему миру.</p></div>
+            <div class="card"><h4>Илья Мечников (1845–1916)</h4><p>Русский биолог, один из пионеров микробиологии. Первым описал роль молочнокислых бактерий, что легло в основу современных пробиотиков и функционального питания.</p></div>
+        </div>
+    </div>
+
+    <!-- ===== 3. ДОСТИЖЕНИЯ ===== -->
+    <div class="tab-pane" id="achievements">
+        <h2>3. Современные достижения (2025–2026)</h2>
+
+        <h3>🍗 Культивируемое мясо</h3>
+        <ul>
+            <li><strong>Сингапур</strong> — первая страна, одобрившая продажу (2020). В 2025 году второе разрешение получила французская <strong>PARIMA</strong> (курица).</li>
+            <li><strong>США</strong> — уже <strong>5 компаний</strong> с одобрением FDA/USDA: Upside Foods, GOOD Meat (курица), Wildtype (лосось), Mission Barns (свиной жир), Believer Meats (курица).</li>
+            <li><strong>Австралия и Новая Зеландия</strong> — в июне 2025 года стартап <strong>Vow</strong> первым получил одобрение на продажу.</li>
+            <li><strong>Нидерланды</strong> — в ноябре 2025 года запущена первая в мире ферма по выращиванию культивированного мяса с интеграцией в традиционное хозяйство.</li>
+            <li><strong>Экономика:</strong> независимый анализ Aleph Farms показал, что их стейки достигнут <strong>47% маржинальности при ценовом паритете</strong> с обычной говядиной.</li>
+        </ul>
+
+        <h3>🥛 Точная ферментация</h3>
+        <ul>
+            <li><strong>Perfect Day</strong> (США) — производит настоящий молочный белок без коров; используется в мороженом, сырах, протеиновых коктейлях.</li>
+            <li><strong>Standing Ovation</strong> (Франция) — в партнёрстве с Bel Group запускает промышленное производство казеина из сыворотки. Проект поддержан Danone.</li>
+            <li><strong>Future Cow</strong> (Бразилия) — производит казеин и сывороточный белок с помощью модифицированных дрожжей. Планирует промышленный запуск к концу 2026 года.</li>
+            <li><strong>Those Vegan Cowboys</strong> (Бельгия) — привлекли рекордную сумму через краудфандинг на производство казеина и сыворотки в биореакторах.</li>
+        </ul>
+
+        <h3>🌾 ГМ-культуры и CRISPR</h3>
+        <ul>
+            <li>Рынок ГМ-семян оценивался в <strong>$27,16 млрд в 2025 году</strong>, с прогнозом до $53,2 млрд к 2034 году.</li>
+            <li>В США в 2025 году FDA одобрило <strong>CRISPR-отредактированную кукурузу VPM-0006</strong> (повышенное содержание амилопектина) и <strong>CRISPR-крупный рогатый скот</strong> (термоустойчивая порода).</li>
+            <li>В <strong>Чили</strong> впервые в Америке одобрена генно-отредактированная пшеница (июль 2025).</li>
+            <li>В <strong>Японии</strong> в список разрешённых добавлен CRISPR-томат (сентябрь 2025).</li>
+            <li><strong>Евросоюз</strong> в декабре 2025 года принял историческое соглашение, открывающее путь для генно-отредактированных фруктов и овощей на коммерческий рынок.</li>
+        </ul>
+
+        <div class="highlight">📈 <strong>Ключевая цифра:</strong> глобальный рынок точной ферментации растёт с CAGR 48,6% — один из самых быстрорастущих сегментов всей пищевой индустрии.</div>
+    </div>
+
+    <!-- ===== 4. ПЛЮСЫ И МИНУСЫ ===== -->
+    <div class="tab-pane" id="proscons">
+        <h2>4. Плюсы и минусы — честный анализ</h2>
+        <div class="plusminus">
+            <div class="plus">
+                <h3>✅ Плюсы</h3>
+                <ul>
+                    <li><strong>Продовольственная безопасность:</strong> к 2050 году население Земли достигнет 10 млрд. Биотехнологии позволяют получать питательные вещества с гораздо меньшими затратами воды, земли и энергии.</li>
+                    <li><strong>Экология:</strong> замена мяса альтернативами может сократить глобальное использование сельхозземель на <strong>32–39%</strong>, потребление воды на <strong>8–12%</strong>, выбросы метана на <strong>60%</strong>, а глобальное потепление — до <strong>0,45°C</strong>.</li>
+                    <li><strong>Здоровье:</strong> продукты без антибиотиков, с заданным составом (больше белка, меньше насыщенных жиров), обогащённые витаминами.</li>
+                    <li><strong>Этичность:</strong> отказ от забоя животных. Один биоптат (забор клеток) может заменить тысячи тонн мяса.</li>
+                    <li><strong>Скорость:</strong> CRISPR сокращает селекцию с десятилетий до месяцев. ГМ-культуры быстрее адаптируются к изменению климата.</li>
+                </ul>
+            </div>
+            <div class="minus">
+                <h3>⚠️ Минусы и риски</h3>
+                <ul>
+                    <li><strong>Высокая стоимость:</strong> культивируемое мясо пока дороже традиционного (хотя разрыв стремительно сокращается).</li>
+                    <li><strong>Регуляторные барьеры:</strong> каждая страна утверждает продукты по-своему. В ряде стран (Италия, некоторые штаты США) действуют полные запреты.</li>
+                    <li><strong>Общественное недоверие:</strong> страх перед ГМО, «лабораторной едой» и CRISPR. Необходимо масштабное научное просвещение.</li>
+                    <li><strong>Монополизация:</strong> риск концентрации патентов и рынка в руках нескольких корпораций.</li>
+                    <li><strong>Киберугрозы:</strong> биореакторы, «умные фермы» и SCADA-системы — новые цели для хакеров (см. раздел 6).</li>
+                </ul>
+            </div>
+        </div>
+        <p><em>Вывод: плюсы значительно перевешивают, а минусы решаются грамотным регулированием, открытой наукой и инвестициями в кибербезопасность.</em></p>
+    </div>
+
+    <!-- ===== 5. ПРИМЕНЕНИЕ ===== -->
+    <div class="tab-pane" id="application">
+        <h2>5. Где уже применяется?</h2>
+
+        <h3>🌱 Сельское хозяйство</h3>
+        <ul>
+            <li>ГМ-культуры, устойчивые к засухе, гербицидам и вредителям, занимают <strong>сотни миллионов гектаров</strong> по всему миру.</li>
+            <li>Российские стартапы (OilGene, Skoltech) внедряют маркер-ассоциированную и геномную селекцию, роботизированные линии анализа растений.</li>
+            <li>Чувашский ГАУ в 2025 году выдал <strong>20 грантов по 1 млн рублей</strong> молодым исследователям на агротех-проекты.</li>
+        </ul>
+
+        <h3>🍔 Альтернативные белки</h3>
+        <ul>
+            <li><strong>Beyond Meat</strong> и <strong>Impossible Foods</strong> — растительное «мясо» в тысячах ресторанов и супермаркетов.</li>
+            <li><strong>Eat Just</strong> (Сингапур, США) — культивируемая курица в продаже.</li>
+            <li>Российский фудтех-стартап <strong>Qummy</strong> привлёк <strong>более 1 млрд рублей</strong> инвестиций за 6 лет и планирует IPO в 2028 году.</li>
+        </ul>
+
+        <h3>🥛 Функциональное питание и пробиотики</h3>
+        <ul>
+            <li>Продукты с заданными свойствами: безлактозное молоко, обогащённые йогурты, протеиновые батончики.</li>
+            <li>Пробиотики на основе штаммов, изученных ещё Мечниковым, — сегодня это многомиллиардная индустрия.</li>
+        </ul>
+
+        <h3>🖨️ 3D-печать еды</h3>
+        <ul>
+            <li>Швейцарская <strong>sallea</strong> использует 3D-печать для создания Scaffold-структур, на которых выращиваются цельные куски мяса.</li>
+            <li>Применяется также для персонализированных десертов, паст и заменителей еды в космосе.</li>
+        </ul>
+
+        <h3>📱 ИИ и персонализированное питание</h3>
+        <ul>
+            <li>Google и сингапурская <strong>AMILI</strong> в 2026 году запускают приложение для персонализированного питания на основе микробиома.</li>
+            <li>Российский стартап <strong>Vilka Rest</strong> разработал AI-официанта, который подбирает блюда под запросы клиента.</li>
+            <li>Системы компьютерного зрения (CNN) с точностью <strong>91,87%</strong> распознают блюда и рассчитывают калорийность по фотографии.</li>
+        </ul>
+
+        <h3>♻️ Биоразлагаемая упаковка</h3>
+        <ul>
+            <li>Плёнки и контейнеры из растительных полимеров, грибного мицелия и водорослей — активно внедряются крупными сетями.</li>
+        </ul>
+    </div>
+
+    <!-- ===== 6. АКТУАЛЬНОСТЬ ===== -->
+    <div class="tab-pane" id="relevance">
+        <h2>6. Актуальность и связь с ИБ</h2>
+
+        <h3>🌍 Почему это важно сейчас</h3>
+        <div class="highlight">🔐 Инвестиции в фудтех в 2025 году составили порядка <strong>$10–11 млрд</strong>, а рынок кибербезопасности к 2027 году достигнет <strong>$290 млрд</strong> (CAGR 13%, GlobalData). Эти две отрасли пересекаются всё сильнее.</div>
+        <ul>
+            <li>Современные пищевые производства — это <strong>IoT-устройства, SCADA-системы, облачные платформы и big data</strong>.</li>
+            <li>За 2021–2025 годы зафиксированы десятки кибератак на сектор F&B: от остановки пивоваренного гиганта <strong>Molson Coors</strong> до атаки на оптового дистрибьютора <strong>UNFI</strong> в июне 2025 года.</li>
+            <li>Рансомварь <strong>JBS Foods (2021)</strong> остановила SCADA-системы и обошлась компании в <strong>$11 млн</strong> выкупа.</li>
+            <li>В Q4 2024 года <strong>70% всех атак</strong> программ-вымогателей в промышленности пришлись на производственный сектор, включая пищевку.</li>
+        </ul>
+
+        <h3>🛡️ Что именно нужно защищать</h3>
+        <ul>
+            <li>🔐 <strong>Рецептуры и штаммы</strong> — интеллектуальная собственность, стоящая миллионы долларов.</li>
+            <li>📡 <strong>IoT-устройства и SCADA</strong> — датчики температуры, влажности, биореакторы. Их взлом грозит не просто остановкой, а <strong>порчей продукции и угрозой здоровью</strong>.</li>
+            <li>💾 <strong>Базы данных потребителей</strong> — утечка генетических профилей и диетических предпочтений.</li>
+            <li>⚖️ <strong>Целостность данных</strong> — регуляторы требуют полной прослеживаемости «от фермы до вилки».</li>
+        </ul>
+
+        <h3>🎓 Связь со специальностью</h3>
+        <p>Для специальности <strong>«Обеспечение информационной безопасности телекоммуникационных систем»</strong> фудтех — одно из самых перспективных направлений. Уже сегодня требуются специалисты, которые понимают:</p>
+        <ul>
+            <li>как защищать промышленные протоколы (Modbus, DNP3, MQTT) на пищевых предприятиях;</li>
+            <li>как выстраивать архитектуру Zero Trust для биотех-лабораторий;</li>
+            <li>как расследовать инциденты в OT/ICS-средах молочных заводов и мясокомбинатов;</li>
+            <li>как обеспечивать compliance с отраслевыми стандартами (IEC 62443, NIST, ISO 27001).</li>
+        </ul>
+        <p><strong>Вывод:</strong> специалист по информационной безопасности в FoodTech — это профессия настоящего и будущего, соединяющая биологию, инженерию и киберзащиту.</p>
+        <p class="footnote">Источники кейсов: Acronis, TXOne Networks, SDxCentral, Risk Education Alliance, Dairy Processing, MDPI, arXiv.</p>
+    </div>
+
+</div>
+
+<footer>© 2026 Индивидуальный проект. Биоинженерия — FoodTech. Все права защищены.</footer>
+
+<script>
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanes.forEach(pane => pane.classList.remove('active'));
+            button.classList.add('active');
+            document.getElementById(button.getAttribute('data-tab')).classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>
